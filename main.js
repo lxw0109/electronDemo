@@ -72,7 +72,6 @@ var list1 = java.newInstanceSync("java.util.ArrayList");
 console.log(list1.sizeSync()); // 0
 list1.addSync('item1');
 console.log(list1.sizeSync()); // 1
-//list1.addSync('item2');
 console.log("list1: " + list1.toStringSync());
 
 //Demo of Async Callback.
@@ -93,23 +92,21 @@ console.log(list3.equalsSync(list1)); // true
 var sys = java.import('java.lang.System');
 sys.out.printlnSync('Hello from java :)');
 
+
 var HelloClass = java.import('Hello');	//HelloClass is still a "class" not a "instance of the class".
-//lxw: static method is NOT OK.
-//HelloClass.sayHelloStaticSync();	//error
-/*
+//Call static method
+console.log(HelloClass.sayHelloStaticSync());
 var returnValStatic = java.callStaticMethodSync("Hello", "sayHelloStatic");
 console.log(returnValStatic);
-*/
+
 
 //lxw: NOT "var helloInstance = new HelloClassSync();"
 var helloInstance = new HelloClass();
-//console.log(helloInstance.sayHelloSync());
-var returnVal = helloInstance.sayHelloSync();
+var returnVal = helloInstance.sayHelloSync("liuxiaowei-frontend in Sync");
 //var returnVal = java.callMethodSync(helloInstance, "sayHello");	//OK
 console.log("Sync: return value of void sayHello(): " + returnVal);
-helloInstance.sayHello(function(err, returnVal1){
+
+helloInstance.sayHello("liuxiaowei-frontend in Async", function(err, returnVal1){
 	console.log("Async: return value of void sayHello(): " + returnVal1);
 });
-
-console.log("helloInstance.toStringSync(): " + helloInstance.toStringSync());
 //-------------------------------------------------------------------
