@@ -63,19 +63,53 @@ java.asyncOptions = {
 */
 
 //lxw: 1. classpath.push is essential here, to find the specific/customized class(src.Hello).
-//     2. class.push() statements MUST be put in front of all the "import" statements.
+//     2. class.push() statements MUST be put in front of all the "import()" and "newInstance()" statements.
+//	   3. used in "1. Demo of customed Java class(src/Hello.java).", but must be here(in front of any "import()" and "newInstance()" statements).
 java.classpath.push("src")
 
-//OK
+//0. Demo of java.newInstanceSync() & java.newInstance() & java.import().
+var list1 = java.newInstanceSync("java.util.ArrayList");
+console.log(list1.sizeSync()); // 0
+list1.addSync('item1');
+console.log(list1.sizeSync()); // 1
+//list1.addSync('item2');
+console.log("list1: " + list1.toStringSync());
+
+//Demo of Async Callback.
+java.newInstance("java.util.ArrayList", function(err, list2) {
+  list2.addSync("item1");
+  list2.addSync("item2");
+  console.log("list2: " + list2.toStringSync()); // [item1, item2]
+});
+
+var ArrayList = java.import('java.util.ArrayList');
+//"Sync" suffix is not for "constructor"(ArrayList() instead of ArrayListSync()).
+var list3 = new ArrayList();
+list3.addSync('item1');
+console.log(list3.equalsSync(list1)); // true
+//-------------------------------------------------------------------
+
+//1. Demo of customed Java class(src/Hello.java).
 var sys = java.import('java.lang.System');
 sys.out.printlnSync('Hello from java :)');
 
 var HelloClass = java.import('Hello');	//HelloClass is still a "class" not a "instance of the class".
-/*
 //lxw: static method is NOT OK.
-HelloClass.sayHelloStaticSync();	//error
+//HelloClass.sayHelloStaticSync();	//error
+/*
+var returnValStatic = java.callStaticMethodSync("Hello", "sayHelloStatic");
+console.log(returnValStatic);
 */
+
 //lxw: NOT "var helloInstance = new HelloClassSync();"
 var helloInstance = new HelloClass();
-console.log(helloInstance.toStringSync());
-console.log(helloInstance.sayHelloSync());
+//console.log(helloInstance.sayHelloSync());
+var returnVal = helloInstance.sayHelloSync();
+//var returnVal = java.callMethodSync(helloInstance, "sayHello");	//OK
+console.log("Sync: return value of void sayHello(): " + returnVal);
+helloInstance.sayHello(function(err, returnVal1){
+	console.log("Async: return value of void sayHello(): " + returnVal1);
+});
+
+console.log("helloInstance.toStringSync(): " + helloInstance.toStringSync());
+//-------------------------------------------------------------------

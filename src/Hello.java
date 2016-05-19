@@ -1,10 +1,9 @@
 public class Hello{
     public Hello(){}
     public static String sayHelloStatic(){
-        return "lxw: Hello in sayHelloStatic()";
+        return "In sayHelloStatic()[Hello.java]";
     }
     public String sayHello(){
-        return "lxw: Hello in sayHello()";
-        //System.out.println("Hello in sayHello1()");
+        return "In sayHello()[Hello.java]";
     }
 }
