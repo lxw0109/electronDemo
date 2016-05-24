@@ -5,6 +5,6 @@ public class Hello{
     }
     public String sayHello(String str){
     	//System.out.println("In sayHello()[Hello.java]. From front-end, str:" + str);
-        return "In sayHello()[Hello.java]. From front-end, str:" + str;
+        return "In sayHello()[Hello.java]. str:" + str;
     }
 }
